@@ -7,15 +7,33 @@ function SearchContent() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [urlError, setUrlError] = useState("");
+
+  const validateUrl = (url: string) => {
+    const regex =
+      /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z0-9]{2,6}(\/[\w-]*)*(\?[a-z0-9&=]*)?(#[\w-]*)?$/i;
+    return regex.test(url);
+  };
 
   const getResults = async () => {
+    if (!url || !query) {
+      return;
+    }
+
+    if (!validateUrl(url)) {
+      setUrlError("Please enter a valid URL.");
+      return;
+    } else {
+      setUrlError("");
+    }
+
     console.log("called");
     setLoading(true);
     try {
       const resp = await fetch("http://127.0.0.1:8000/api/v1/search", {
-        method: "POST", // <-- Important
+        method: "POST",
         headers: {
-          "Content-Type": "application/json", // <-- Important
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           url: url,
@@ -38,17 +56,15 @@ function SearchContent() {
       setLoading(false);
     }
   };
+
   return (
-    <div
-      //   onSubmit={handleSubmit}
-      className=""
-    >
+    <div>
       <h1 className="text-2xl font-bold text-center">Website Content Search</h1>
       <p className="text-gray-500 text-sm mb-10 font-semibold text-center">
         Search through website content with precision
       </p>
 
-      <div className="relative mb-5">
+      <div className="relative ">
         <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
           <Globe className="h-5 w-5" />
         </span>
@@ -60,9 +76,11 @@ function SearchContent() {
           className="border p-2 pl-10 rounded-md w-full"
           required
         />
+        {/* Show URL error message */}
       </div>
+      {urlError && <p className="text-red-500 text-sm mb-2">{urlError}</p>}
 
-      <div className="relative flex items-center">
+      <div className="relative flex items-center mt-2">
         <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
           <Search className="h-5 w-5" />
         </span>
@@ -89,6 +107,7 @@ function SearchContent() {
           )}
         </button>
       </div>
+
       <div>
         <SearchResult searchResults={searchResults} />
       </div>
