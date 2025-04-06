@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+      - "50051:50051" # gRPC port
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - ENABLE_MODULES=text2vec-transformers
+      - DEFAULT_VECTORIZER_MODULE=text2vec-transformers
+      - TRANSFORMERS_INFERENCE_API=http://model-inference:8080 # Point to local inference API
+    depends_on:
+      - model-inference
+    restart: unless-stopped
+
+  model-inference:
+    image: semitechnologies/transformers-inference:sentence-transformers-all-MiniLM-L6-v2
+    ports:
+      - "8081:8080" # This is internal; no need to expose if you don't want
+    environment:
+      - ENABLE_CUDA=false # Set true if you want GPU
+    restart: unless-stopped
