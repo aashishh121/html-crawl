@@ -49,7 +49,6 @@ def insert_chunks_to_vectordb(chunks):
 def search_chunks(query: str):
     
     collection = client.collections.get("HtmlChunk")
-    print(collection.data, 'query')
     result = collection.query.near_text(
         query=query,
         limit=10,
