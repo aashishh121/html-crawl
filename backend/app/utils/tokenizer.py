@@ -17,19 +17,19 @@ def split_html_text_into_chunks(html: str, max_tokens=10):
     for tag in soup(["script", "style", "noscript", "iframe"]):
         tag.decompose()
 
-    allowed_attributes = ['class']
-    for tag in soup.find_all():
-        cleaned_attributes = {}
+    # allowed_attributes = ['class']
+    # for tag in soup.find_all():
+    #     cleaned_attributes = {}
 
-        for attribute, value in tag.attrs.items():
-            if attribute in allowed_attributes:
-                cleaned_attributes[attribute] = value
+    #     for attribute, value in tag.attrs.items():
+    #         if attribute in allowed_attributes:
+    #             cleaned_attributes[attribute] = value
 
-        tag.attrs = cleaned_attributes
+    #     tag.attrs = cleaned_attributes
 
-    cleaned_html = soup.prettify()
-    cleaned_soup = BeautifulSoup(cleaned_html, 'html.parser')
-    blocks = cleaned_soup.find_all()
+    # cleaned_html = soup.prettify()
+    # cleaned_soup = BeautifulSoup(cleaned_html, 'html.parser')
+    blocks = soup.find_all()
    
 
     chunks = []
@@ -67,4 +67,6 @@ def split_html_text_into_chunks(html: str, max_tokens=10):
         })
 
     return chunks
+
+
 
