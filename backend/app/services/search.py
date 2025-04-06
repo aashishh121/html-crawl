@@ -31,7 +31,7 @@ def insert_chunks_to_vectordb(chunks):
             name=schema_name,
             properties=[
                 classes.Property(name="content", data_type=classes.DataType.TEXT),
-                 classes.Property(name="raw_html", data_type=classes.DataType.TEXT),
+                #  classes.Property(name="raw_html", data_type=classes.DataType.TEXT),
             ],
             vectorizer_config=classes.Configure.Vectorizer.text2vec_openai(),
         )
@@ -39,19 +39,20 @@ def insert_chunks_to_vectordb(chunks):
     # Add chunks to db
     collection = client.collections.get(schema_name)
     for chunk in chunks:
-        collection.data.insert({
+        if chunk["raw_html"] != "":
+            collection.data.insert({
             "content": chunk["cleaned_text"],
             "raw_html": chunk["raw_html"]
         })
 
 
 def search_chunks(query: str):
+    
     collection = client.collections.get("HtmlChunk")
-
+    print(collection.data, 'query')
     result = collection.query.near_text(
         query=query,
         limit=10,
-        include_vector = False,
         return_properties=["content","raw_html"],
         return_metadata=["certainty","distance", "score"],
     )
