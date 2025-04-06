@@ -1,4 +1,5 @@
 # Website Content Search App
+![Website Content Search Screenshot](./Screenshot 2025-04-06 130640.png)
 
     A Single Page Application (SPA) that allows users to input a website URL and a search query,
     fetches the HTML content from the URL, splits it into tokenized chunks,
