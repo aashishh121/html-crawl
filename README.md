@@ -1,5 +1,5 @@
 # Website Content Search App
-<div align="center"> <img src="/screenshot-2025-04-06.png" alt="Website Content Search Screenshot" width="600"/> </div>
+<div align="center"> <img src="https://github.com/aashishh121/html-crawl/blob/master/Screenshot%202025-04-06%20130640.png" alt="Website Content Search Screenshot" width="600"/> </div>
 
     A Single Page Application (SPA) that allows users to input a website URL and a search query,
     fetches the HTML content from the URL, splits it into tokenized chunks,
